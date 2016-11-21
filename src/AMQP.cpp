@@ -92,7 +92,7 @@ void AMQP::parseCnnString( string cnnString ) {
 		AMQP::parseHostPort(hostPortStr);
 		user = AMQPLOGIN;
 		password = AMQPPSWD;
-	} else if (string::npos == pos) {
+	} if (string::npos == pos) {
 		AMQP::parseHostPort(cnnString);
 		user = AMQPLOGIN;
 		password = AMQPPSWD;
@@ -109,7 +109,7 @@ void AMQP::parseUserStr(string userString) {
 	if (0 == pos) {
 		user = AMQPLOGIN;
 		password.assign(userString, 1, string::npos);
-	} else if (string::npos == pos) {
+	} if (string::npos == pos) {
 		user = userString;
 		password = AMQPPSWD;
 	} else {
@@ -179,6 +179,7 @@ void AMQP::sockConnect() {
 	cnn = amqp_new_connection();
 
 	switch(proto) {
+#ifdef WITH_SSL
 		case AMQPS_proto: {
 			sockfd = amqp_ssl_socket_new(cnn);
 
@@ -196,7 +197,7 @@ void AMQP::sockConnect() {
 			amqp_ssl_socket_set_verify_hostname(sockfd, verify_hostname ? 1 : 0);
 		}
 		break;
-
+#endif // WITH_SSL
 		case AMQP_proto:
 		default:
 			sockfd = amqp_tcp_socket_new(cnn);
