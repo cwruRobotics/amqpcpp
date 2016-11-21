@@ -4,3 +4,6 @@ example_publish
 libamqpcpp.a
 *.o
 *~
+conaninfo.txt
+conanbuildinfo.*
+build/
