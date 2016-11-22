@@ -1,4 +1,5 @@
 cmake_minimum_required (VERSION 2.6)
+include (GenerateExportHeader)
 project (AMQP)
 
 include_directories("include")
@@ -6,7 +7,7 @@ include_directories("include")
 include(conanbuildinfo.cmake)
 conan_basic_setup()
 
-add_library(AMQP src/AMQP.cpp src/AMQPBase.cpp src/AMQPException.cpp src/AMQPExchange.cpp src/AMQPMessage.cpp src/AMQPQueue.cpp)
+add_library(AMQP SHARED src/AMQP.cpp src/AMQPBase.cpp src/AMQPException.cpp src/AMQPExchange.cpp src/AMQPMessage.cpp src/AMQPQueue.cpp)
 target_link_libraries(AMQP ${CONAN_LIBS})
 
 add_executable(ExampleConsume examples/example_consume.cpp)

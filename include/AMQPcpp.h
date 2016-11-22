@@ -34,6 +34,19 @@
 #define HEADER_FOOTER_SIZE 8 //  7 bytes up front, then payload, then 1 byte footer
 #define FRAME_MAX 131072    // max lenght (size) of frame
 
+#if defined (WIN32)
+  #if defined (_MSC_VER)
+    #pragma warning(disable: 4251)
+  #endif
+  #if defined(AMQP_EXPORTS)
+    #define  AMQP_EXPORT __declspec(dllexport)
+  #else
+    #define  AMQP_EXPORT __declspec(dllimport)
+  #endif
+#else
+  #define AMQP_EXPORT
+#endif
+
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
@@ -54,7 +67,7 @@
 
 //export AMQP;
 
-class AMQPQueue;
+class AMQP_EXPORT AMQPQueue;
 
 enum AMQPEvents_e {
 	AMQP_MESSAGE, AMQP_SIGUSR, AMQP_CANCEL, AMQP_CLOSE_CHANNEL
@@ -88,7 +101,7 @@ class AMQPException : public std::exception {
 
 
 
-class AMQPMessage {
+class AMQP_EXPORT AMQPMessage {
 
 	char * data;
 	uint32_t len;
@@ -135,7 +148,7 @@ class AMQPMessage {
 };
 
 
-class AMQPBase {
+class AMQP_EXPORT AMQPBase {
 	protected:
 		std::string name;
 		short parms;
@@ -161,7 +174,7 @@ class AMQPBase {
 		void setName(std::string name);
 };
 
-class AMQPQueue : public AMQPBase  {
+class AMQP_EXPORT AMQPQueue : public AMQPBase  {
 	protected:
 		std::map< AMQPEvents_e, int(*)( AMQPMessage * ) > events;
 		amqp_bytes_t consumer_tag;
@@ -227,7 +240,7 @@ class AMQPQueue : public AMQPBase  {
 };
 
 
-class AMQPExchange : public AMQPBase {
+class AMQP_EXPORT AMQPExchange : public AMQPBase {
 	std::string type;
 	std::map<std::string,std::string> sHeaders;
 	std::map<std::string,std::string> sHeadersSpecial;
@@ -271,7 +284,7 @@ class AMQPExchange : public AMQPBase {
 
 };
 
-class AMQP {
+class AMQP_EXPORT AMQP {
 	public:
 		AMQP();
 		AMQP(std::string cnnStr, bool use_ssl_=false,

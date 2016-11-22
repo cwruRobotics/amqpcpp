@@ -21,6 +21,9 @@ class GlenniferClientConan(ConanFile):
       self.copy("*.h", dst=".")
       self.copy("*.lib", dst="lib", src="lib")
       self.copy("*.a", dst="lib", src="lib")
+      self.copy("*.so", dst="lib", src="lib")
+      self.copy("*.dll", dst="bin", src="lib")
+      self.copy("*.dll", dst="bin", src="bin")
 
    def package_info(self):
       self.cpp_info.libs = ["amqp"]
